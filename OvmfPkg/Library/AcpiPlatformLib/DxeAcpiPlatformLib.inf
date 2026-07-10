@@ -38,3 +38,7 @@
 
 [Pcd]
   gEfiMdeModulePkgTokenSpaceGuid.PcdPciDisableBusEnumeration
+
+[FeaturePcd]
+  gUefiOvmfPkgTokenSpaceGuid.PcdExcludeAcpiTablesRtmr0
+

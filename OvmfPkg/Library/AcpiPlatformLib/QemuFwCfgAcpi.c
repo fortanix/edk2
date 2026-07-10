@@ -21,6 +21,7 @@
 #include <Library/QemuFwCfgS3Lib.h>           // QemuFwCfgS3Enabled()
 #include <Library/UefiBootServicesTableLib.h> // gBS
 #include <Library/TpmMeasurementLib.h>
+#include <Library/PcdLib.h>
 
 //
 // The user structure for the ordered collection that will track the fw_cfg
@@ -422,14 +423,16 @@ ProcessCmdAllocate (
   // It has to be done before it is consumed. Because the data will
   // be updated in the following operations.
   //
-  TpmMeasureAndLogData (
-    1,
-    EV_PLATFORM_CONFIG_FLAGS,
-    EV_POSTCODE_INFO_ACPI_DATA,
-    ACPI_DATA_LEN,
-    (VOID *)(UINTN)Blob->Base,
-    Blob->Size
-    );
+  if (!FeaturePcdGet (PcdExcludeAcpiTablesRtmr0)) {
+    TpmMeasureAndLogData (
+      1,
+      EV_PLATFORM_CONFIG_FLAGS,
+      EV_POSTCODE_INFO_ACPI_DATA,
+      ACPI_DATA_LEN,
+      (VOID *)(UINTN)Blob->Base,
+      Blob->Size
+      );
+  }
 
   return EFI_SUCCESS;
 
@@ -1148,14 +1151,16 @@ InstallQemuFwCfgTables (
   // It has to be done before it is consumed. Because it would be
   // updated in the following operations.
   //
-  TpmMeasureAndLogData (
-    1,
-    EV_PLATFORM_CONFIG_FLAGS,
-    EV_POSTCODE_INFO_ACPI_DATA,
-    ACPI_DATA_LEN,
-    (VOID *)(UINTN)LoaderStart,
-    FwCfgSize
-    );
+  if (!FeaturePcdGet (PcdExcludeAcpiTablesRtmr0)) {
+    TpmMeasureAndLogData (
+      1,
+      EV_PLATFORM_CONFIG_FLAGS,
+      EV_POSTCODE_INFO_ACPI_DATA,
+      ACPI_DATA_LEN,
+      (VOID *)(UINTN)LoaderStart,
+      FwCfgSize
+      );
+  }
 
   LoaderEnd = LoaderStart + FwCfgSize / sizeof *LoaderEntry;
 
