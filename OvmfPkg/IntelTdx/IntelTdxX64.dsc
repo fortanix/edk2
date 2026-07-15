@@ -30,6 +30,7 @@
   # -D FLAG=VALUE
   #
   DEFINE SECURE_BOOT_ENABLE      = FALSE
+  DEFINE EXCLUDE_ACPI_TABLES_RTMR0 = FALSE
 
   #
   # Shell can be useful for debugging but should not be enabled for production
@@ -382,6 +383,8 @@
   gUefiOvmfPkgTokenSpaceGuid.PcdSecureBootSupported|TRUE
   gEfiMdeModulePkgTokenSpaceGuid.PcdRequireSelfSignedPk|TRUE
 !endif
+
+  gUefiOvmfPkgTokenSpaceGuid.PcdExcludeAcpiTablesRtmr0|$(EXCLUDE_ACPI_TABLES_RTMR0)
 
 [PcdsFixedAtBuild]
   gEfiMdeModulePkgTokenSpaceGuid.PcdStatusCodeMemorySize|1
